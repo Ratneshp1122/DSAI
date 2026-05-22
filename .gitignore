@@ -1,0 +1,72 @@
+# ── Environment & secrets ──────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Python ─────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.whl
+*.so
+*.dylib
+
+# ── Virtual environments ────────────────────────────────────────────────────────
+venv/
+.venv/
+env/
+.env/
+ENV/
+
+# ── Pytest / test artifacts ─────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+*.xml
+coverage.xml
+
+# ── Uploads (runtime data) ──────────────────────────────────────────────────────
+uploads/
+*.pdf
+*.mp3
+*.wav
+*.m4a
+*.ogg
+*.flac
+
+# ── ML model cache ──────────────────────────────────────────────────────────────
+*.pt
+*.bin
+*.safetensors
+models/
+.cache/
+huggingface/
+
+# ── IDE ─────────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── OS ──────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Logs ────────────────────────────────────────────────────────────────────────
+*.log
+logs/
+
+# ── Jupyter ─────────────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb
+
+# ── Node (if any frontend build tools added later) ───────────────────────────────
+node_modules/

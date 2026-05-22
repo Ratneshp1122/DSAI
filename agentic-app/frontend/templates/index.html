@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NeuraMind — Agentic Multi-Modal AI</title>
+  <meta name="description" content="Upload images, PDFs, or audio and let AI summarize, analyze sentiment, explain code, and answer your questions." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+  <!-- ── Animated background ─────────────────────────────────────────────── -->
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- ── App Shell ────────────────────────────────────────────────────────── -->
+  <div class="app-shell">
+
+    <!-- LEFT PANEL: Upload + File Info -->
+    <aside class="left-panel" id="leftPanel">
+      <div class="panel-header">
+        <div class="logo">
+          <span class="logo-icon">⬡</span>
+          <span class="logo-text">Neura<strong>Mind</strong></span>
+        </div>
+        <p class="logo-sub">Multi-Modal Agentic AI</p>
+      </div>
+
+      <!-- Drop Zone -->
+      <div class="drop-zone" id="dropZone">
+        <div class="drop-zone-inner">
+          <div class="drop-icon" id="dropIcon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <p class="drop-title">Drop file here</p>
+          <p class="drop-sub">or <label for="fileInput" class="browse-link">browse</label></p>
+          <input type="file" id="fileInput" accept="image/*,.pdf,audio/*,.txt,.md" hidden />
+          <div class="drop-tags">
+            <span class="tag">JPG/PNG</span>
+            <span class="tag">PDF</span>
+            <span class="tag">MP3/WAV</span>
+            <span class="tag">TXT</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upload Progress -->
+      <div class="upload-progress hidden" id="uploadProgress">
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+        <p class="progress-label" id="progressLabel">Extracting content…</p>
+      </div>
+
+      <!-- File Card (shown after upload) -->
+      <div class="file-card hidden" id="fileCard">
+        <div class="file-card-header">
+          <div class="file-icon" id="fileIcon">📄</div>
+          <div class="file-info">
+            <p class="file-name" id="fileName">document.pdf</p>
+            <p class="file-meta" id="fileMeta">PDF · 3 pages · 1,204 words</p>
+          </div>
+          <button class="btn-icon" id="clearFile" title="Remove file">✕</button>
+        </div>
+
+        <!-- Confidence meter -->
+        <div class="confidence-section" id="confidenceSection">
+          <div class="conf-label">
+            <span>Extraction confidence</span>
+            <span id="confValue">—</span>
+          </div>
+          <div class="conf-bar-wrap">
+            <div class="conf-bar-fill" id="confBar"></div>
+          </div>
+        </div>
+
+        <!-- Text preview -->
+        <div class="text-preview-wrap" id="textPreviewWrap">
+          <p class="preview-label">Extracted preview</p>
+          <div class="text-preview" id="textPreview"></div>
+        </div>
+      </div>
+
+      <!-- Capabilities -->
+      <div class="caps-section" id="capsSection">
+        <p class="caps-title">What I can do</p>
+        <ul class="caps-list">
+          <li class="cap-item"><span class="cap-icon">📝</span> Summarize documents</li>
+          <li class="cap-item"><span class="cap-icon">💬</span> Answer questions via RAG</li>
+          <li class="cap-item"><span class="cap-icon">🎭</span> Sentiment analysis</li>
+          <li class="cap-item"><span class="cap-icon">💻</span> Explain &amp; review code</li>
+          <li class="cap-item"><span class="cap-icon">🎧</span> Transcribe audio</li>
+          <li class="cap-item"><span class="cap-icon">▶️</span> YouTube summaries</li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- RIGHT PANEL: Chat -->
+    <main class="chat-panel" id="chatPanel">
+
+      <!-- Chat header -->
+      <header class="chat-header">
+        <div class="chat-header-left">
+          <button class="btn-icon sidebar-toggle" id="sidebarToggle" title="Toggle sidebar">☰</button>
+          <div>
+            <h1 class="chat-title">Chat</h1>
+            <p class="chat-status" id="chatStatus">Ready — upload a file or start chatting</p>
+          </div>
+        </div>
+        <div class="chat-header-right">
+          <button class="btn-icon btn-new" id="newSession" title="New session">+ New</button>
+        </div>
+      </header>
+
+      <!-- Message list -->
+      <div class="messages" id="messages">
+        <!-- Welcome message -->
+        <div class="msg msg-ai welcome-msg">
+          <div class="msg-avatar">⬡</div>
+          <div class="msg-content">
+            <p class="msg-label">NeuraMind</p>
+            <div class="msg-bubble">
+              <p>Hello! I'm your multi-modal AI assistant. You can:</p>
+              <ul>
+                <li>📎 Upload a <strong>file</strong> from the left panel, then ask me something</li>
+                <li>🔗 Paste a <strong>YouTube URL</strong> and I'll fetch the transcript</li>
+                <li>💬 Just start <strong>chatting</strong> without any file</li>
+              </ul>
+              <p style="margin-top:10px;opacity:0.7;font-size:0.88rem;">All responses are text-only with full process transparency.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Execution Plan panel (hidden until response) -->
+      <div class="exec-plan hidden" id="execPlan">
+        <button class="plan-toggle" id="planToggle">
+          <span>⚙ Execution Plan</span>
+          <span class="plan-chevron">▼</span>
+        </button>
+        <div class="plan-steps hidden" id="planSteps"></div>
+      </div>
+
+      <!-- Input area -->
+      <div class="input-area">
+        <div class="input-wrap">
+          <textarea
+            id="userInput"
+            class="chat-input"
+            placeholder="Ask a question, paste a YouTube URL, or just chat…"
+            rows="1"
+            maxlength="4000"
+          ></textarea>
+          <button class="send-btn" id="sendBtn" title="Send message">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </button>
+        </div>
+        <p class="input-hint">
+          Session: <code id="sessionIdDisplay">—</code>
+        </p>
+      </div>
+    </main>
+  </div>
+
+  <!-- ── Toast notifications ─────────────────────────────────────────────── -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
